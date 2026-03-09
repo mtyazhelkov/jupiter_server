@@ -1,0 +1,21 @@
+services:
+  jupyter:
+    image: jupyter/scipy-notebook:latest  # библиотеки для Data Science
+    container_name: jupyter_notebook
+    restart: always
+    ports:
+      - "8990:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work  # файлы будут в папке notebooks на сервере
+    environment:
+      - JUPYTER_TOKEN=${jupiter_password}
+    user: root
+    working_dir: /home/jovyan/work
+    command: start-notebook.sh --allow-root
+    deploy:
+      resources:
+        limits: 
+          cpus: '0.8'      # Ограничение до 80% одного ядра, чтобы SSH не тормозил
+          memory: 800M     # Жесткий лимит (чуть меньше свободного остатка)
+        reservations:
+          memory: 256M       # Минимально гарантированный объем

@@ -7,6 +7,11 @@ services:
       - "8990:8888"
     volumes:
       - ./notebooks:/home/jovyan/work  # файлы будут в папке notebooks на сервере
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
     environment:
       - JUPYTER_TOKEN=${jupiter_password}
     user: root
